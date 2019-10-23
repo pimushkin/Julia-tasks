@@ -197,7 +197,6 @@ int* countDiagonalSum(int** Matrix, const int ROWS, const int COLUMNS)
 		for (; i < ROWS; i++, j++)
 		{
 			sum += Matrix[i][j];
-
 		}
 
 		/*
