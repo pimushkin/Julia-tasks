@@ -12,7 +12,7 @@ void* sortMatrix(int** Matrix, int ROWS, int COLUMNS);
 void* addElement(int** Matrix, int ROWS, int *COLUMNS, int NEW_ELEMENT);
 
 /*
- * функция для подсчёта суммы элементов на диагонали матрицы
+ * функция для подсчёта суммы элементов по диагонали матрицы
  */
 int* countDiagonalSum(int** Matrix, int ROWS, int COLUMNS);
 
@@ -39,7 +39,6 @@ int main()
 		Matrix[i] = malloc(sizeof(int) * (n + 1));
 	}
 	
-
 	printf("Enter the matrix elements:\n");
 
 	/*
@@ -104,9 +103,15 @@ int main()
 
 	/*
 	 * подсчитываем сумму элементов по диагонали
-	 * матрицы, если матрица квадратная
+	 * матрицы, и если она не квадратная, то в sum
+	 * передается пустота(значение NULL)
 	 */
 	const int* sum = countDiagonalSum(Matrix, m, n);
+
+	/*
+	 * если сумма была подсчитана, то
+	 * выводим на экран полученную сумму
+	 */
 	if (sum != NULL)
 	{
 		printf("Diagonal sum of elements = %d.", sum);
@@ -175,7 +180,7 @@ void* addElement(int** Matrix, const int ROWS, int *COLUMNS, const int NEW_ELEME
 }
 
 /*
- * функция для подсчёта суммы элементов на диагонали матрицы(если она квадратичная)
+ * функция для подсчёта суммы элементов по диагонали матрицы(если она квадратичная)
  */
 int* countDiagonalSum(int** Matrix, const int ROWS, const int COLUMNS)
 {
