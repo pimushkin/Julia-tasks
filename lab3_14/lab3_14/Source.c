@@ -29,9 +29,9 @@ int main()
 	 * создаем матрицу при помощи двумерного
 	 * массива с выделением динамической памяти
 	 */
-	int** matrix = malloc(sizeof(int) * m);
+	int** matrix = (int**)malloc(m * sizeof(int*));
 	for (int i = 0; i < m; i++) {
-		matrix[i] = malloc(sizeof(int) * n);
+		matrix[i] = (int*)malloc(n * sizeof(int));
 	}
 
 	printf("Enter the matrix elements:\n");
@@ -52,7 +52,7 @@ int main()
 	 * выделяем память по одномерный массив сумм
 	 * элементов каждой строки матрицы
 	 */
-	int* vectorSum = malloc(sizeof(int) * m);
+	int* vectorSum = (int*)malloc(m * sizeof(int));
 
 	/*
 	 * добавляем в наш массив vectorSum сумму
@@ -100,6 +100,16 @@ int main()
 	}
 	printf("\n");
 
+	/*
+	 * очистка памяти
+	 */
+	free(vectorSum);
+	for (int i = 0; i < m; i++)
+	{
+		free(matrix[i]);
+	}
+	free(matrix);
+	
 	system("pause");
 	return 0;
 }
