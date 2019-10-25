@@ -91,11 +91,14 @@ int main()
 	
 	printf("New matrix:\n");
 	printf("-----------\n");
+	/*
+	 * выводим элементы полученной новой матрицы
+	 */
 	for (int i = 0; i < m; i++)
 	{
 		for (int j = 0; j < n; j++)
 		{
-			printf("%d\t", Matrix[i][j]); // выводим элементы полученной новой матрицы
+			printf("%d\t", Matrix[i][j]);
 		}
 		printf("\n");
 	}
@@ -106,6 +109,11 @@ int main()
 	 * матрицы, и если она не квадратная, то в sum
 	 * передается пустота(значение NULL)
 	 */
+
+	/*
+	 * значение NULL может принимать только указатель,
+	 * поэтому придется объявить sum как указатель
+	 */
 	const int* sum = countDiagonalSum(Matrix, m, n);
 
 	/*
@@ -114,7 +122,12 @@ int main()
 	 */
 	if (sum != NULL)
 	{
-		printf("Diagonal sum of elements = %d.", sum);
+		/*
+		 * чтобы вывести на экран значение указателя sum,
+		 * используем операцию разименования указателя
+		 * (перед sum ставим *)
+		 */
+		printf("Diagonal sum of elements = %d.", *sum);
 		printf("\n\n");
 	}
 
@@ -192,11 +205,15 @@ int* countDiagonalSum(int** Matrix, const int ROWS, const int COLUMNS)
 	if (ROWS == COLUMNS)
 	{
 		int sum = 0;
-		int i = 0;
-		int j = 0;
-		for (; i < ROWS; i++, j++)
+		for (int i = 0; i < ROWS; i++) // можно написать и COLUMNS(разницы не будет)
 		{
-			sum += Matrix[i][j];
+			/*
+			 * все элементы по диагонали имеют
+			 * одинаковый номер строки и столбца,
+			 * поэтому в квадратных скобках
+			 * указываем i два раза
+			 */
+			sum += Matrix[i][i];
 		}
 
 		/*
@@ -205,7 +222,13 @@ int* countDiagonalSum(int** Matrix, const int ROWS, const int COLUMNS)
 		 * поэтому return NULL ниже после условного 
 		 * оператора if не сработает
 		 */
-		return sum;
+
+		/*
+		 * так как мы будем возвращать результат в
+		 * указатель, то передавать в него будем
+		 * не значение, а адрес переменной sum
+		 */
+		return &sum;
 	}
 
 	/*
