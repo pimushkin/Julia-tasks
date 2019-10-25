@@ -142,12 +142,9 @@ void* sortMatrix(int** matrix, const int ROWS, const int COLUMNS, int* vectorSum
 				/*
 				 * а затем также меняем и строки самой матрицы
 				 */
-				for (int k = 0; k < COLUMNS; k++)
-				{
-					const int temp2 = matrix[j][k];
-					matrix[j][k] = matrix[j + 1][k];
-					matrix[j + 1][k] = temp2;
-				}
+				const int *temp2 = matrix[j];
+				matrix[j] = matrix[j + 1];
+				matrix[j + 1] = *temp2;
 			}
 		}
 	}
