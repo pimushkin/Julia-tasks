@@ -49,7 +49,7 @@ int main()
 	printf("\n\n");
 
 	/*
-	 * выдел€ем пам€ть по одномерный массив сумм
+	 * выдел€ем пам€ть под одномерный массив сумм
 	 * элементов каждой строки матрицы
 	 */
 	int* vectorSum = (int*)malloc(m * sizeof(int));
@@ -60,6 +60,12 @@ int main()
 	 */
 	for (int i = 0; i < m; i++)
 	{
+		/*
+		 * передаем в качестве второго аргумента
+		 * фукнции calculateSumElementsVector
+		 * текущее значение i, чтобы функци€ знала
+		 * элементы какой строки надо суммировать
+		 */
 		vectorSum[i] = calculateSumElementsVector(matrix, i, n);
 	}
 
@@ -69,6 +75,12 @@ int main()
 	{
 		for (int j = 0; j < n; j++)
 		{
+			/*
+			 * дл€ нормального вывода матрицы
+			 * на экране добавим в конец строки \t,
+			 * чтобы использовать табул€цию (пробел
+			 * между каждым элементом)
+			 */
 			printf("%d\t", matrix[i][j]);
 		}
 		
@@ -101,9 +113,18 @@ int main()
 	printf("\n");
 
 	/*
-	 * очистка пам€ти
+	 * освобождаем €вным образом динимически выделенную
+	 * пам€ть под матрицу и под сумму элементов каждой
+	 * строки, так в дальнейшем она нам уже больше
+	 * не понадобитс€, и делаем это при помощи функции free
 	 */
 	free(vectorSum);
+
+	/*
+	 * так как массив matrix €вл€етс€ двумерным
+	 * в отличии от vectorSum, то нужно не забыть
+	 * также высвободить пам€ть под столбцы матрицы
+	 */
 	for (int i = 0; i < m; i++)
 	{
 		free(matrix[i]);
@@ -142,9 +163,17 @@ void* sortMatrix(int** matrix, const int ROWS, const int COLUMNS, int* vectorSum
 				/*
 				 * а затем также мен€ем и строки самой матрицы
 				 */
+
+				/*
+				 * чтобы можно было помен€ть строки местами
+				 * не по одному элементу ещЄ одним вложенным
+				 * циклом, объ€вим temp как указатель
+				 * (присваива€ тем самым адрес на все
+				 * элементы указанной строки матрицы)
+				 */
 				const int *temp2 = matrix[j];
 				matrix[j] = matrix[j + 1];
-				matrix[j + 1] = *temp2;
+				matrix[j + 1] = temp2;
 			}
 		}
 	}
@@ -155,7 +184,14 @@ void* sortMatrix(int** matrix, const int ROWS, const int COLUMNS, int* vectorSum
  */
 int* calculateSumElementsVector(int** matrix, const int CURRENT, const int COLUMNS)
 {
+	/*
+	 * об€зательно надо проинициализировать
+	 * переменную sum как 0, так как мы
+	 * прибавл€ем к ней другие значени€,
+	 * а не перезаписываем
+	 */
 	int sum = 0;
+
 	for (int i = 0; i < COLUMNS; i++)
 	{
 		/*
@@ -164,5 +200,10 @@ int* calculateSumElementsVector(int** matrix, const int CURRENT, const int COLUM
 		 */
 		sum += matrix[CURRENT][i];
 	}
+	/*
+	 * чтобы записывать результат подсчитанной
+	 * суммы строки в элемент массива vectorSum,
+	 * используем оператор return
+	 */
 	return sum;
 }

@@ -4,17 +4,17 @@
 /*
  * фукнция для сортировки матрицы
  */
-void* sortMatrix(int** Matrix, int ROWS, int COLUMNS);
+void* sortMatrix(int** matrix, int ROWS, int COLUMNS);
 
 /*
  * функция для вставки нового элемента в матрицу
  */
-void* addElement(int** Matrix, int ROWS, int *COLUMNS, int NEW_ELEMENT);
+void* addElement(int** matrix, int ROWS, int *COLUMNS, int NEW_ELEMENT);
 
 /*
  * функция для подсчёта суммы элементов по диагонали матрицы
  */
-int* countDiagonalSum(int** Matrix, int ROWS, int COLUMNS);
+int* countDiagonalSum(int** matrix, int ROWS, int COLUMNS);
 
 int main()
 {
@@ -34,9 +34,9 @@ int main()
 	 * создаем изначальную матрицу при помощи
 	 * двумерного массива с выделением динамической памяти
 	 */
-	int** Matrix = malloc(sizeof(int) * m);
+	int** matrix = (int**)malloc(m * sizeof(int*));
 	for (int i = 0; i < m; i++) {
-		Matrix[i] = malloc(sizeof(int) * (n + 1));
+		matrix[i] = (int*)malloc((n + 1) * sizeof(int));
 	}
 	
 	printf("Enter the matrix elements:\n");
@@ -48,7 +48,7 @@ int main()
 	{
 		for (int j = 0; j < n; j++)
 		{
-			scanf_s("%d", &Matrix[i][j]);
+			scanf_s("%d", &matrix[i][j]);
 		}
 	}
 	printf("\n\n");
@@ -56,7 +56,7 @@ int main()
 	/*
 	 * производим первую сортировку для нашей изначальной матрицы
 	 */
-	sortMatrix(Matrix, m, n);
+	sortMatrix(matrix, m, n);
 	
 	printf("Sorted matrix:\n");
 	printf("--------------\n");
@@ -68,7 +68,7 @@ int main()
 	{
 		for (int j = 0; j < n; j++)
 		{
-			printf("%d\t", Matrix[i][j]);
+			printf("%d\t", matrix[i][j]);
 		}
 		printf("\n");
 	}
@@ -85,9 +85,15 @@ int main()
 	printf("\n\n");
 
 	/*
-	 * вызываем функцию addElement по добавлению нового элемента в матрицу
+	 * вызываем функцию addElement по добавлению
+	 * нового элемента в матрицу
+	 *
+	 * передаем третьим аргументом адрес
+	 * переменной n (столбца), чтобы увеличить
+	 * внутри функции addElement количество
+	 * столбцов матрицы
 	 */
-	addElement(Matrix, m, &n, newElement);
+	addElement(matrix, m, &n, newElement);
 	
 	printf("New matrix:\n");
 	printf("-----------\n");
@@ -98,7 +104,7 @@ int main()
 	{
 		for (int j = 0; j < n; j++)
 		{
-			printf("%d\t", Matrix[i][j]);
+			printf("%d\t", matrix[i][j]);
 		}
 		printf("\n");
 	}
@@ -114,7 +120,7 @@ int main()
 	 * значение NULL может принимать только указатель,
 	 * поэтому придется объявить sum как указатель
 	 */
-	const int* sum = countDiagonalSum(Matrix, m, n);
+	const int* sum = countDiagonalSum(matrix, m, n);
 
 	/*
 	 * если сумма была подсчитана, то
@@ -139,16 +145,14 @@ int main()
  * сортировка матрицы методом Пузырька(немного измененным,
  * чтобы не сортировать всю матрицу как единую строку)
  */
-void* sortMatrix(int** Matrix, const int ROWS, const int COLUMNS)
+void* sortMatrix(int** matrix, const int ROWS, const int COLUMNS)
 {
 	for (int k = 0; k < ROWS; k++)
 	{
 		/*
 		 * так как нам нужно отсортировать каждую строку независимо друг
 		 * от друга, то количество вложенных циклов придется увеличить
-		 */
-
-		/*
+		 *
 		 * вычитаем единицу, чтобы не выйти за пределы массива во время сортировки
 		 */
 		for (int i = 0; i < COLUMNS - 1; i++)
@@ -159,11 +163,11 @@ void* sortMatrix(int** Matrix, const int ROWS, const int COLUMNS)
 				 * если текущий элемент строки матрицы больше
 				 * следующего, то меняем их местами
 				 */
-				if (Matrix[k][j] > Matrix[k][j + 1])
+				if (matrix[k][j] > matrix[k][j + 1])
 				{
-					const int temp = Matrix[k][j];
-					Matrix[k][j] = Matrix[k][j + 1];
-					Matrix[k][j + 1] = temp;
+					const int temp = matrix[k][j];
+					matrix[k][j] = matrix[k][j + 1];
+					matrix[k][j + 1] = temp;
 				}
 			}
 		}
@@ -173,15 +177,22 @@ void* sortMatrix(int** Matrix, const int ROWS, const int COLUMNS)
 /*
  * функция по добавлению нового элеменента в каждую строку матрицы
  */
-void* addElement(int** Matrix, const int ROWS, int *COLUMNS, const int NEW_ELEMENT)
+void* addElement(int** matrix, const int ROWS, int *COLUMNS, const int NEW_ELEMENT)
 {
+	/*
+	 * добавляем новые элементы в конец каждой строки матрицы
+	 */
 	for (int i = 0; i < ROWS; i++)
 	{
-		Matrix[i][*COLUMNS] = NEW_ELEMENT;
+		matrix[i][*COLUMNS] = NEW_ELEMENT;
 	}
 
 	/*
 	 * увеличиваем количество столбцов в матрице на единицу
+	 *
+	 * так как делаем это через указатель, то возвращать
+	 * новое число столбцов при помощи оператора return
+	 * не надо
 	 */
 	*COLUMNS = *COLUMNS + 1;
 
@@ -189,13 +200,13 @@ void* addElement(int** Matrix, const int ROWS, int *COLUMNS, const int NEW_ELEME
 	 * после добавления нового элемента в конец каждой строки
 	 * матрицы, мы сортируем нашу матрицу по новой
 	 */
-	sortMatrix(Matrix, ROWS, *COLUMNS);
+	sortMatrix(matrix, ROWS, *COLUMNS);
 }
 
 /*
  * функция для подсчёта суммы элементов по диагонали матрицы(если она квадратичная)
  */
-int* countDiagonalSum(int** Matrix, const int ROWS, const int COLUMNS)
+int* countDiagonalSum(int** matrix, const int ROWS, const int COLUMNS)
 {
 	/*
 	 * проверяем, чтобы количество строк
@@ -204,6 +215,12 @@ int* countDiagonalSum(int** Matrix, const int ROWS, const int COLUMNS)
 	 */
 	if (ROWS == COLUMNS)
 	{
+		/*
+		* обязательно надо проинициализировать
+		* переменную sum как 0, так как мы
+		* прибавляем к ней другие значения,
+		* а не перезаписываем
+		*/
 		int sum = 0;
 		for (int i = 0; i < ROWS; i++) // можно написать и COLUMNS(разницы не будет)
 		{
@@ -213,7 +230,7 @@ int* countDiagonalSum(int** Matrix, const int ROWS, const int COLUMNS)
 			 * поэтому в квадратных скобках
 			 * указываем i два раза
 			 */
-			sum += Matrix[i][i];
+			sum += matrix[i][i];
 		}
 
 		/*
