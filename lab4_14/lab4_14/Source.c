@@ -6,17 +6,17 @@
  */
 #include <stdlib.h>
 #include <stdio.h> // библиотека для работы с выводом на экран(printf)
-/*
- * библиотека для работы с переменными типа данных bool,
- * инициализирующиеся как true или false
- */
+ /*
+  * библиотека для работы с переменными типа данных bool,
+  * инициализирующиеся как true или false
+  */
 #include <stdbool.h>
 #include <math.h> // библиотека для работы с фукнцией log10
 #include <time.h> // библиотека для работы с функцией time
 
-/*
- * структура, описывающая компоненту списка
- */
+  /*
+   * структура, описывающая компоненту списка
+   */
 struct Node
 {
 	/*
@@ -84,7 +84,7 @@ int main()
 	 * времени на компьютере
 	 */
 	srand(time(NULL));
-	
+
 	/*
 	 * объявляем список(или же шапку),
 	 * который сразу инициализируем как NULL,
@@ -153,9 +153,9 @@ int main()
 	printf("----------------\n");
 	printList(head);
 	printf("\n");
-	
+
 	system("pause");
-	
+
 	return 0;
 }
 
@@ -194,7 +194,7 @@ void* printList(struct Node* head)
 void* constructNode(struct Node* head)
 {
 	struct Node* current = head;
-	
+
 	/*
 	 * инициализируем указатель первого компонента на следующий
 	 * как пустой, тем самым получаем пустой список
@@ -205,7 +205,7 @@ void* constructNode(struct Node* head)
 void* push(struct Node* head, const char* value)
 {
 	struct Node* current = head;
-	
+
 	/*
 	 * перебираем все компоненты в поиске компоненты
 	 * с пустым указателем
@@ -219,7 +219,7 @@ void* push(struct Node* head, const char* value)
 	 * выделяем память под следующий компонент, ...
 	 */
 	current->next = malloc(sizeof(struct Node));
-	
+
 	/*
 	 * записываем в текующую компоненту элемент,
 	 * который передали в функцию
@@ -228,7 +228,7 @@ void* push(struct Node* head, const char* value)
 	{
 		current->value[i] = value[i];
 	}
-	
+
 	/*
 	 * ...а также инициализируем указатель следующего
 	 * компонента как пустой
@@ -263,7 +263,7 @@ int* removeWrongValues(struct Node** head, const char WRONG_FIGURE)
 			break;
 		}
 	}
-	
+
 	while (current->next != NULL)
 	{
 		/*
@@ -304,7 +304,7 @@ int* removeWrongValues(struct Node** head, const char WRONG_FIGURE)
 			 * ...выполняем переход к следующему элементу
 			 */
 			current = current->next;
-		}	
+		}
 	}
 	/*
 	 * если первый флаг принял значение true, то...
@@ -358,7 +358,7 @@ char* generateValue()
 	char* value = (char*)malloc(11 * sizeof(char));
 	char* chRandom1 = (char*)malloc(4 * sizeof(char));
 	char* chRandom2 = (char*)malloc(3 * sizeof(char));
-	
+
 	/*
 	 * генерируем случаное число, от которого находим остаток
 	 * при делении на 9000, и прибавляем 1000(таким образом
@@ -389,7 +389,7 @@ char* generateValue()
 	{
 		value[j] = chRandom1[j - 4];
 	}
-	
+
 	random = rand() % 900 + 100;
 	chRandom2 = toArray(random);
 	/*
