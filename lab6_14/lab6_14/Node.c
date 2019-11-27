@@ -92,7 +92,7 @@ void removeWrongValues(tNode** head)
 }
 
 int pop(tNode** head) {
-	tNode* nextNode = NULL;
+	tNode* nextNode;
 	if (*head == NULL) {
 		printf("Error! You cannot remove an empty component.\n\n");
 		return 1;
